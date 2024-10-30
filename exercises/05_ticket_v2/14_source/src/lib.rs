@@ -1,4 +1,7 @@
+use status::ParseStatusError;
+
 use crate::status::Status;
+use std::error::Error;
 
 // We've seen how to declare modules in one of the earliest exercises, but
 // we haven't seen how to extract them into separate files.
@@ -13,7 +16,7 @@ mod status;
 // TODO: Add a new error variant to `TicketNewError` for when the status string is invalid.
 //   When calling `source` on an error of that variant, it should return a `ParseStatusError` rather than `None`.
 
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug, thiserror::Error, Clone)]
 pub enum TicketNewError {
     #[error("Title cannot be empty")]
     TitleCannotBeEmpty,
@@ -23,6 +26,14 @@ pub enum TicketNewError {
     DescriptionCannotBeEmpty,
     #[error("Description cannot be longer than 500 bytes")]
     DescriptionTooLong,
+    #[error("{0}")]
+    InvalidStatus (String),
+}
+
+impl TicketNewError{
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        Some(&TicketNewError::DescriptionCannotBeEmpty)
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -48,12 +59,16 @@ impl Ticket {
         }
 
         // TODO: Parse the status string into a `Status` enum.
+        let s = Status::try_from(status.clone());
+        match s{
+            Ok(validStatus) => Ok(Ticket {
+                                                    title,
+                                                    description,
+                                                    status: validStatus,
+                                                }),
+            Err(e)=> return Err(TicketNewError::InvalidStatus(e.to_string()))
+        }
 
-        Ok(Ticket {
-            title,
-            description,
-            status,
-        })
     }
 }
 

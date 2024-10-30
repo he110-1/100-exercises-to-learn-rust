@@ -1,5 +1,10 @@
 // TODO: Add `anyhow` as a dependency of this project.
 //  Don't touch this import!
+pub mod anyhow{
+    pub struct Error{
+
+    }
+}
 
 // When you import a type (`Error`) from a dependency, the import path must start
 // with the crate name (`anyhow`, in this case).

@@ -1,10 +1,34 @@
 // TODO: Implement `TryFrom<String>` and `TryFrom<&str>` for the `Status` enum.
 //  The parsing should be case-insensitive.
-
+#[derive(PartialEq, Debug, Clone)]
 pub enum Status {
     ToDo,
     InProgress,
     Done,
+}
+
+impl TryFrom<String> for Status{
+    type Error = String;
+    fn try_from(data:String) -> Result<Status,String>{
+        match data.to_lowercase().as_str(){
+            "todo" => return Ok(Status::ToDo),
+            "inprogress" => return Ok(Status::InProgress),
+            "done" => return Ok(Status::Done),
+            _ => return Err("Status should not be empty !".to_string())
+        }
+    }
+}
+
+impl TryFrom<&str> for Status{
+    type Error = String;
+    fn try_from(data:&str) -> Result<Status,String>{
+        match data.to_lowercase().as_str(){
+            "todo" => return Ok(Status::ToDo),
+            "inprogress" => return Ok(Status::InProgress),
+            "done" => return Ok(Status::Done),
+            _ => return Err("Status should not be empty !".to_string())
+        }
+    }
 }
 
 #[cfg(test)]

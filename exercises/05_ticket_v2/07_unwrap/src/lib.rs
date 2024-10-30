@@ -1,8 +1,45 @@
 // TODO: `easy_ticket` should panic when the title is invalid.
 //   When the description is invalid, instead, it should use a default description:
 //   "Description not provided".
+/*fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
+    let t:Result<Ticket, String> = Ticket::new(title.clone(),description.clone(),status.clone());
+
+    match &t{
+        Ok(t) => return t.clone(),
+        Err(e) =>{
+            if e == "Title cannot be empty"{
+                panic!("Title cannot be empty")
+            }
+            if e == "Title cannot be longer than 50 bytes"{
+                panic!("Title cannot be longer than 50 bytes")
+            }
+            if e == "Description cannot be empty"{
+                return Ticket::new(title.clone(),"Description not provided".to_string(),status.clone()).unwrap();
+            }
+            if e == "Description cannot be longer than 500 bytes"{
+                return Ticket::new(title,"Description not provided".to_string(),status).unwrap();
+            }else{
+                return t.unwrap();
+            }
+        }
+    }
+}*/
+
 fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
-    todo!()
+    let t:Result<Ticket, String> = Ticket::new(title.clone(),description,status.clone());
+
+    match &t{
+        Ok(t) => return t.clone(),
+        Err(e) =>{
+            match e.as_str(){
+                "Title cannot be empty" =>panic!("Title cannot be empty"),
+                "Title cannot be longer than 50 bytes" =>panic!("Title cannot be longer than 50 bytes"),
+                "Description cannot be empty" =>Ticket::new(title,"Description not provided".to_string(),status).unwrap(),
+                "Description cannot be longer than 500 bytes" =>Ticket::new(title,"Description not provided".to_string(),status).unwrap(),
+                _ =>t.unwrap(),
+            }
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]

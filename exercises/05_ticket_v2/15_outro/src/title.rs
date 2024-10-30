@@ -2,6 +2,34 @@
 //   enforcing that the title is not empty and is not longer than 50 bytes.
 //   Implement the traits required to make the tests pass too.
 
+impl TryFrom<String> for TicketTitle{
+    type Error = String;
+    fn try_from(data:String) -> Result<TicketTitle,String>{
+        if data.is_empty(){
+            return Err("The title cannot be empty".to_string());
+        }else if data.len() > 50 {
+            return Err("The title cannot be longer than 50 bytes".to_string());
+        }
+        else{
+            return Ok(TicketTitle(data));
+        }
+    }
+}
+
+impl TryFrom<&str> for TicketTitle{
+    type Error = String;
+    fn try_from(data:&str) -> Result<TicketTitle,String>{
+        if data.is_empty(){
+            return Err("The title cannot be empty".to_string());
+        }else if data.len() > 50 {
+            return Err("The title cannot be longer than 50 bytes".to_string());
+        }else{
+            return Ok(TicketTitle(data.to_string()));
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub struct TicketTitle(String);
 
 #[cfg(test)]
