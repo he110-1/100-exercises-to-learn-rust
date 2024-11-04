@@ -1,7 +1,7 @@
 // TODO: Flesh out the `WeekTemperatures` struct and its method implementations to pass the tests.
 
 pub struct WeekTemperatures {
-    // TODO
+    temperatures: [i32;7]
 }
 
 pub enum Weekday {
@@ -16,15 +16,49 @@ pub enum Weekday {
 
 impl WeekTemperatures {
     pub fn new() -> Self {
-        todo!()
+        WeekTemperatures{
+            temperatures: [0,0,0,0,0,0,0]
+        }
     }
 
     pub fn get_temperature(&self, day: Weekday) -> Option<i32> {
-        todo!()
+        match day{
+            Weekday::Monday => if self.temperatures[0] != 0{
+                return Some(self.temperatures[0]);
+            },
+            Weekday::Tuesday => if self.temperatures[1] != 0{
+                return Some(self.temperatures[1]);
+            },
+            Weekday::Wednesday => if self.temperatures[0] != 0{
+                return Some(self.temperatures[2]);
+            },
+            Weekday::Thursday => if self.temperatures[0] != 0{
+                return Some(self.temperatures[3]);
+            },
+            Weekday::Friday => if self.temperatures[0] != 0{
+                return Some(self.temperatures[4]);
+            },
+            Weekday::Saturday => if self.temperatures[0] != 0{
+                return Some(self.temperatures[5]);
+            },
+            Weekday::Sunday => if self.temperatures[0] != 0{
+                return Some(self.temperatures[6]);
+            },
+            _ => return None
+        }
+        return None;
     }
 
     pub fn set_temperature(&mut self, day: Weekday, temperature: i32) {
-        todo!()
+        match day{
+            Weekday::Monday => self.temperatures[0] = temperature,
+            Weekday::Tuesday => self.temperatures[1] = temperature,
+            Weekday::Wednesday => self.temperatures[2] = temperature,
+            Weekday::Thursday => self.temperatures[3] = temperature,
+            Weekday::Friday => self.temperatures[4] = temperature,
+            Weekday::Saturday => self.temperatures[5] = temperature,
+            Weekday::Sunday => self.temperatures[6] = temperature,
+        }
     }
 }
 

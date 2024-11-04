@@ -1,5 +1,7 @@
 // TODO: Implement `Index<&TicketId>` and `Index<TicketId>` for `TicketStore`.
 
+use std::ops::Index;
+
 use ticket_fields::{TicketDescription, TicketTitle};
 
 #[derive(Clone)]
@@ -32,6 +34,34 @@ pub enum Status {
     Done,
 }
 
+impl Index<TicketId> for TicketStore{
+    type Output = Ticket;
+
+    // Required method
+    fn index(&self, index: TicketId) -> &Self::Output{
+        for t in &self.tickets{
+            if t.id == index{
+                return &t;
+            }
+        }
+        panic!("Index not found !");
+    }
+}
+
+impl Index<&TicketId> for TicketStore{
+    type Output = Ticket;
+
+    // Required method
+    fn index(&self, index: &TicketId) -> &Self::Output{
+        for t in &self.tickets{
+            if t.id == *index{
+                return &t;
+            }
+        }
+        panic!("Index not found !");
+    }
+}
+
 impl TicketStore {
     pub fn new() -> Self {
         Self {
@@ -56,6 +86,7 @@ impl TicketStore {
     pub fn get(&self, id: TicketId) -> Option<&Ticket> {
         self.tickets.iter().find(|&t| t.id == id)
     }
+
 }
 
 #[cfg(test)]

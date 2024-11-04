@@ -38,14 +38,31 @@ pub enum Status {
 }
 
 impl TicketStore {
+    
     pub fn new() -> Self {
         Self {
             tickets: Vec::new(),
         }
     }
 
-    pub fn add_ticket(&mut self, ticket: Ticket) {
+    pub fn add_ticket(&mut self, ticketDraft: TicketDraft) -> TicketId{
+        let tickId:TicketId = TicketId(TicketStore::generateNumber(&self));
+        let ticket: Ticket = Ticket { id: tickId, title: ticketDraft.title, description: ticketDraft.description, status: Status::ToDo };
         self.tickets.push(ticket);
+        return tickId;
+    }
+
+    pub fn generateNumber(&self)->u64{
+        return self.tickets.len() as u64;
+    }
+
+    pub fn get(&self,_id:TicketId) -> Option<&Ticket>{
+        for t in &self.tickets{
+            if t.id == _id{
+                return Some(&t);
+            }
+        }
+        return None
     }
 }
 
